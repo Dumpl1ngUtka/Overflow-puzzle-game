@@ -23,6 +23,8 @@ namespace GameMainScene.Flask
             _colorScheme = colorScheme;
             _colors = CreateColorCells(maxHeight);
             _colorIndexes = new int[maxHeight];
+            for (var i = 0; i < _colorIndexes.Length; i++) 
+                _colorIndexes[i] = -1;
         }
 
         public void Render(int[] colors)

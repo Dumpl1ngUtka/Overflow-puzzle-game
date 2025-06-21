@@ -5,17 +5,18 @@ namespace GameMainScene
 {
     public class GameSceneView : MonoBehaviour
     {
-        private Flask.Flask _flaskPrefab;
-        private Transform _flaskContainer;
+        [SerializeField] private SelectedColorFlask _selectedColor;
+        [SerializeField] private Flask.Flask _flaskPrefab;
+        [SerializeField] private Transform _flaskContainer;
         private int _flaskHeight;
         public Flask.Flask[] Flasks {get; private set;} 
+        public SelectedColorFlask SelectedColorFlask => _selectedColor;
         
         
-        public void Init(int flaskCount, int flaskHeight, Flask.Flask flaskPrefab, Transform flaskContainer, ColorScheme colorScheme)
+        public void Init(int flaskCount, int flaskHeight, ColorScheme colorScheme)
         {
-            _flaskPrefab = flaskPrefab;
-            _flaskContainer = flaskContainer;
             _flaskHeight = flaskHeight;
+            _selectedColor.Init(colorScheme);
             
             ClearContainer();
             CreateFlasks(flaskCount, flaskHeight, colorScheme);       
@@ -30,6 +31,7 @@ namespace GameMainScene
                     colors[i] = allColors[flaskIndex, i];
                 Render(flaskIndex, colors);
             }
+            RenderSelectedColor(0);
         }
         
         public void Render(int flaskIndex, int[,] allColors)
@@ -44,6 +46,11 @@ namespace GameMainScene
         {
             var flask = Flasks[flaskIndex];
             flask.Render(colors);
+        }
+
+        public void RenderSelectedColor(int colorIndex)
+        {
+            _selectedColor.Render(colorIndex);
         }
 
         private void CreateFlasks(int flaskCount, int flaskHeight, ColorScheme colorScheme)

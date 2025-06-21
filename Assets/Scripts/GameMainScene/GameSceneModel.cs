@@ -8,8 +8,8 @@ namespace GameMainScene
     public class GameSceneModel
     {
         private readonly Random _random;
-        private int _selectedColor;
         
+        public int SelectedColor {get; private set; }
         public readonly int[,] Map;
         public readonly int FlaskCount;
         public readonly int FlaskHeight;
@@ -25,22 +25,15 @@ namespace GameMainScene
             FlaskHeight = levelPreset.FlaskHeight;
             
             Map = GenerateMap(FlaskCount, FlaskHeight);
-            for (int i = 0; i < FlaskCount; i++)
-            {
-                var str = "";
-                for (int j = 0; j < FlaskHeight; j++)
-                    str += Map[i, j] + " ";
-                Debug.Log(str);
-            }
         }
 
         public void ClickOnFlask(int flaskIndex)
         {
-            if (_selectedColor == 0)
+            if (SelectedColor == 0)
             {
                 if (!IsFlaskEmpty(flaskIndex))
                 {
-                    _selectedColor = GetColorFromTop(flaskIndex);
+                    SelectedColor = GetColorFromTop(flaskIndex);
                     RemoveColorFromTop(flaskIndex);
                 }
                 else
@@ -52,8 +45,9 @@ namespace GameMainScene
             {
                 if (!IsFlaskFull(flaskIndex))
                 {
-                    PutColorToTop(flaskIndex, _selectedColor);
-                    _selectedColor = 0;
+                    PutColorToTop(flaskIndex, SelectedColor);
+                    SelectedColor = 0;
+                    CheckLevelComplete();
                 }
                 else
                 {
@@ -69,7 +63,6 @@ namespace GameMainScene
                 for (var heightIndex = 0; heightIndex < map.GetLength(1); heightIndex++) 
                     map[flaskIndex, heightIndex] = flaskIndex; // 0 = empty cell
 
-            //return map;
             return MixedColors(map);
         }
 
@@ -80,13 +73,8 @@ namespace GameMainScene
             var colors = new int[flaskCount * flaskHeight];
 
             var colorIndex = 0;
-            var str = "";
-            foreach (var color in baseMap)
-            {
-                str += color + " ";
+            foreach (var color in baseMap) 
                 colors[colorIndex++] = color;
-            }
-            Debug.Log(str);
 
             while (colorIndex > 1)
             {
@@ -154,5 +142,30 @@ namespace GameMainScene
         private bool IsFlaskEmpty(int flaskIndex) => Map[flaskIndex, 0] == 0;
 
         private bool IsFlaskFull(int flaskIndex) => Map[flaskIndex, FlaskHeight - 1] != 0;
+
+        private void CheckLevelComplete()
+        {
+            if (IsLevelComplete())
+            {
+                Debug.Log("COMPLETE");
+            }
+        }
+        
+        private bool IsLevelComplete()
+        {
+            if (SelectedColor != 0)
+                return false;
+            
+            for (var flaskIndex = 0; flaskIndex < Map.GetLength(0); flaskIndex++)
+            {
+                var colorIndex = Map[flaskIndex, 0];
+                for (var heightIndex = 1; heightIndex < Map.GetLength(1); heightIndex++)
+                {
+                    if (colorIndex != Map[flaskIndex, heightIndex])
+                        return false;
+                }
+            }
+            return true;
+        }
     }
 }
