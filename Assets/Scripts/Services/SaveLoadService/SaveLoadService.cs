@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 
 namespace Services.SaveLoadService
@@ -11,10 +12,15 @@ namespace Services.SaveLoadService
         public static SaveLoadService Instance => 
             _instance ?? FindAnyObjectByType(typeof(SaveLoadService)) as SaveLoadService;
         
-        public void Init(ISaveLoadRepository<LevelData> levelLoader, string filePath)
+        public void Init(ISaveLoadRepository<LevelData> levelLoader)
         {
             _levelLoader = levelLoader;
-            _filePath = filePath;
+            var saveDirectory = Path.Combine(Application.persistentDataPath, "Saves");
+            
+            if (!Directory.Exists(saveDirectory))
+                Directory.CreateDirectory(saveDirectory);
+            
+            _filePath = Path.Combine(saveDirectory, "Save.json");
         }
         
         public void SaveData(LevelData data) => _levelLoader.Save(_filePath, data);

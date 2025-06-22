@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8892562130432467148}
   - component: {fileID: 4721454660463851931}
   - component: {fileID: -6140214605991054684}
+  - component: {fileID: 823443832620495635}
+  - component: {fileID: 64884392618639144}
   m_Layer: 5
   m_Name: FlaskColor
   m_TagString: Untagged
@@ -88,3 +90,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63cf6c359ece4e8791713c33337aca2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &823443832620495635
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5373500658030083007}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &64884392618639144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5373500658030083007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75e2c675d264f119eba271a2c86e35e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animationSpeed: 3

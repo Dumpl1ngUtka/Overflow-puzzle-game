@@ -7,15 +7,16 @@ namespace GameMainScene
     [RequireComponent(typeof(GameSceneView))]
     public class GameSceneController : SceneController
     {
+        [SerializeField] private Color[] _colors;
         private GameSceneModel _model;
         private GameSceneView _view;
         
         protected override void OnEnter()
         {
-            var TMPCOLORSHEME = new ColorScheme(Color.yellow, Color.red, Color.green, Color.blue, Color.black, Color.cyan, Color.grey, Color.magenta);
+            var TMPCOLORSHEME = new ColorScheme(_colors);
             
             _model = new GameSceneModel();
-            _view = GetComponentInParent<GameSceneView>();
+            _view = GetComponent<GameSceneView>();
             _view.Init(_model.FlaskCount, _model.FlaskHeight, TMPCOLORSHEME);
 
             SubscribeToFlask();
@@ -26,6 +27,10 @@ namespace GameMainScene
         protected override void OnExit()
         {
         }
+
+        public void OnExitButtonClicked() => _model.Exit();
+        
+        public void OnRestartButtonClicked() => _model.Restart();
 
         private void SubscribeToFlask()
         {

@@ -1,4 +1,5 @@
 using GameMainScene;
+using MainMenuScene;
 using UnityEngine;
 
 namespace Services.SceneControlService
@@ -8,26 +9,31 @@ namespace Services.SceneControlService
         private static SceneControlService _instance;
         
         private SceneController _currentSceneController;
-        private Canvas _canvas;
+        private Transform _container;
 
         public static SceneControlService Instance => 
             _instance ?? FindAnyObjectByType(typeof(SceneControlService)) as SceneControlService;
 
         public SceneController GameControllerPrefab; 
+        public MainMenuController MainMenuPrefab; 
         
-        public void Init(Canvas canvas, GameSceneController gameSceneControllerPrefab)
+        public void Init(Transform container, GameSceneController gameSceneControllerPrefab, MainMenuController mainMenuPrefab)
         {
             GameControllerPrefab = gameSceneControllerPrefab;
-            _canvas = canvas;
-            
-            ChangeScene(GameControllerPrefab);
+            MainMenuPrefab = mainMenuPrefab;
+            _container = container;
+        }
+
+        private void Start()
+        {
+            ChangeScene(MainMenuPrefab);
         }
 
         public void ChangeScene(SceneController sceneControllerPrefab)
         {
-            //play transition animation
             _currentSceneController?.Destroy();
-            _currentSceneController = Instantiate(sceneControllerPrefab, _canvas.transform);
+            _currentSceneController = Instantiate(sceneControllerPrefab, _container);
+            _currentSceneController.transform.SetAsFirstSibling();
             _currentSceneController.Init();
         }
     }

@@ -12,7 +12,6 @@ namespace GameMainScene.Flask
         private ColorScheme _colorScheme;
         public Action OnClicked;
 
-
         public void Init(ColorScheme colorScheme)
         {
             _colorScheme = colorScheme;

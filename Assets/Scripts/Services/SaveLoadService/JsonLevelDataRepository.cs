@@ -8,8 +8,8 @@ namespace Services.SaveLoadService
     {
         public void Save(string path, LevelData data)
         {
-            var json = JsonUtility.ToJson(data);
-            File.WriteAllText(path, json);      
+            var json = JsonUtility.ToJson(data); 
+            File.WriteAllText(path, json);    
         }
 
         public LevelData Load(string path)

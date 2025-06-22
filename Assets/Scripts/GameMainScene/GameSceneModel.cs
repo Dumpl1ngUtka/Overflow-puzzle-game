@@ -1,5 +1,6 @@
 using Helpers;
 using Services.SaveLoadService;
+using Services.SceneControlService;
 using UnityEngine;
 using Random = System.Random;
 
@@ -8,7 +9,7 @@ namespace GameMainScene
     public class GameSceneModel
     {
         private readonly Random _random;
-        
+        private LevelData _levelData;
         public int SelectedColor {get; private set; }
         public readonly int[,] Map;
         public readonly int FlaskCount;
@@ -16,8 +17,8 @@ namespace GameMainScene
         
         public GameSceneModel()
         {
-            var data = SaveLoadService.Instance.LoadData();
-            var levelPreset = LevelPresetCalculator.GetLevelPresetById(data.CurrentLevelIndex);
+            _levelData = SaveLoadService.Instance.LoadData();
+            var levelPreset = LevelPresetCalculator.GetLevelPresetById(_levelData.CurrentLevelIndex);
             
             _random = new Random(levelPreset.RandomHash);
             
@@ -147,7 +148,11 @@ namespace GameMainScene
         {
             if (IsLevelComplete())
             {
-                Debug.Log("COMPLETE");
+                _levelData.CurrentLevelIndex += 1;
+                SaveLoadService.Instance.SaveData(_levelData);
+                
+                var service = SceneControlService.Instance;
+                service.ChangeScene(service.GameControllerPrefab);
             }
         }
         
@@ -166,6 +171,19 @@ namespace GameMainScene
                 }
             }
             return true;
+        }
+
+        public void Exit()
+        {
+            var service = SceneControlService.Instance;
+            service.ChangeScene(service.MainMenuPrefab);
+        }
+        
+        
+        public void Restart()
+        {
+            var service = SceneControlService.Instance;
+            service.ChangeScene(service.GameControllerPrefab);
         }
     }
 }
